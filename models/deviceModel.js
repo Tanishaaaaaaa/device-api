@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
+// Define the device schema
 const deviceSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    type: { type: String, required: true },
-    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
-    updatedAt: { type: Date, default: Date.now }
+  name: { type: String, required: true },
+  type: { type: String, required: true },
+  status: { type: String, default: 'active' }
 });
 
-module.exports = mongoose.model('Device', deviceSchema);
+// Create the Device model
+const Device = mongoose.model('Device', deviceSchema);
+
+module.exports = Device;
