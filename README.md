@@ -8,4 +8,4 @@ This project is a *Node.js REST API* integrated with a *MongoDB database*. It pr
 - *PUT*: Update device information
 - *DELETE*: Remove a device
 
-The API is hosted as a *web application*, and the endpoints can be accessed from any machine, enabling easy interaction with the API. The application has been manually deployed to ensure it is accessible for external use.
+The API will be hosted as a *web application*, and the endpoints can be accessed from any machine. The application has been manually deployed to ensure it is accessible for external use.
