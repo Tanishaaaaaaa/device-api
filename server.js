@@ -4,14 +4,22 @@ const mongoose = require('mongoose');
 // Initialize the app
 const app = express();
 
-// Middleware to parse JSON bodies
 app.use(express.json());
-
+require('dotenv').config(); 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/devicesDB', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+//mongoose.connect('mongodb://localhost:27017/devicesDB', { useNewUrlParser: true, useUnifiedTopology: true })
+//  .then(() => console.log("MongoDB Connected"))
+//  .catch(err => console.log(err));
+// Connect to MongoDB Atlas
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/devicesDB'; // For local use
+mongoose.set("strictQuery", false);
 
+mongoose.connect(mongoURI, {
+  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds if DNS fails
+  family: 4 // Force IPv4 for DNS resolution
+})
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch(err => console.error("❌ MongoDB Connection Error:", err));
 // Device Model
 const Device = mongoose.model('Device', new mongoose.Schema({
   name: { type: String, required: true },
@@ -21,15 +29,22 @@ const Device = mongoose.model('Device', new mongoose.Schema({
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('Welcome to the Device API! Use /api/devices for device operations.');
+  res.send('Welcome to the Device API! This is my first assignments');
 });
 // Create a new device
 app.post('/api/devices', async (req, res) => {
   const { name, type, status } = req.body;
   const newDevice = new Device({ name, type, status });
-  await newDevice.save();
-  res.status(201).json(newDevice);
+  
+  try {
+    await newDevice.save();  // Save the new device to MongoDB
+    res.status(201).json(newDevice);  // Return the new device in the response
+  } catch (err) {
+    console.error("Error saving device:", err);  // Log any errors
+    res.status(500).json({ message: 'Error saving device to database' });  // Send error response
+  }
 });
+
 
 // Get all devices
 app.get('/api/devices', async (req, res) => {
