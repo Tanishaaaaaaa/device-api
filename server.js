@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');  // Add this to import mongoose
 
 
 const app = express();
