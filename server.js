@@ -20,7 +20,9 @@ const Device = mongoose.model('Device', new mongoose.Schema({
 }));
 
 // Routes
-
+app.get('/', (req, res) => {
+  res.send('Welcome to the Device API! Use /api/devices for device operations.');
+});
 // Create a new device
 app.post('/api/devices', async (req, res) => {
   const { name, type, status } = req.body;
