@@ -11,9 +11,17 @@ require('dotenv').config();
 
 const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 5000 })
+mongoose.set("strictQuery", false);
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds if DNS fails
+  family: 4 // Force IPv4 for DNS resolution
+})
   .then(() => console.log("✅ MongoDB Connected to Atlas"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
+
 
 
 // Device Model
