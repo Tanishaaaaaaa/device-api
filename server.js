@@ -1,16 +1,20 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
-// Initialize the app
+const mongoURI = process.env.MONGO_URI || "mongodb+srv://tanishasaxena3105:Tanisha@31@deviceapicluster.whyk7.mongodb.net/devicesDB?retryWrites=true&w=majority&appName=DeviceAPICluster"; 
+
 const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/devicesDB', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+const mongoose = require('mongoose');
+require('dotenv').config(); // To use environment variables
+
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB Connected to Atlas"))
+  .catch(err => console.error("MongoDB Connection Error:", err));
+
 
 // Device Model
 const Device = mongoose.model('Device', new mongoose.Schema({
