@@ -1,6 +1,5 @@
 const express = require('express');
 
-const mongoURI = process.env.MONGO_URI || "mongodb+srv://tanishasaxena3105:Tanisha@31@deviceapicluster.whyk7.mongodb.net/devicesDB?retryWrites=true&w=majority&appName=DeviceAPICluster"; 
 
 const app = express();
 
@@ -8,12 +7,13 @@ const app = express();
 app.use(express.json());
 
 const mongoose = require('mongoose');
-require('dotenv').config(); // To use environment variables
+require('dotenv').config();
 
+const mongoURI = process.env.MONGO_URI;
 
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB Connected to Atlas"))
-  .catch(err => console.error("MongoDB Connection Error:", err));
+mongoose.connect(mongoURI, { serverSelectionTimeoutMS: 5000 })
+  .then(() => console.log("✅ MongoDB Connected to Atlas"))
+  .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
 
 // Device Model
