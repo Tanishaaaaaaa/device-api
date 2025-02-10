@@ -31,35 +31,35 @@ const Device = mongoose.model('Device', new mongoose.Schema({
 app.get('/', (req, res) => {
   res.send('Welcome to the Device API! This is my first assignments');
 });
-// Create a new device
+// Post 
 app.post('/api/devices', async (req, res) => {
   const { name, type, status } = req.body;
   const newDevice = new Device({ name, type, status });
   
   try {
-    await newDevice.save();  // Save the new device to MongoDB
-    res.status(201).json(newDevice);  // Return the new device in the response
+    await newDevice.save();  
+    res.status(201).json(newDevice); 
   } catch (err) {
-    console.error("Error saving device:", err);  // Log any errors
-    res.status(500).json({ message: 'Error saving device to database' });  // Send error response
+    console.error("Error saving device:", err);  
+    res.status(500).json({ message: 'Error saving device to database' });  
   }
 });
 
 
-// Get all devices
+// Get
 app.get('/api/devices', async (req, res) => {
   const devices = await Device.find();
   res.json(devices);
 });
 
-// Update device details
+// Update
 app.put('/api/devices/:id', async (req, res) => {
   const device = await Device.findByIdAndUpdate(req.params.id, req.body, { new: true });
   if (!device) return res.status(404).json({ message: "Device not found" });
   res.json(device);
 });
 
-// Delete a device
+// Delete 
 app.delete('/api/devices/:id', async (req, res) => {
   const device = await Device.findByIdAndDelete(req.params.id);
   if (!device) return res.status(404).json({ message: "Device not found" });
